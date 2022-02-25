@@ -8,7 +8,9 @@
       />
     </div>
     <div class="rounded-b-lg">
-      <p class="text-gray-400 text-sm mb-1">#{{ pokeitem.id }}</p>
+      <p class="text-gray-400 text-sm mb-1">
+        #{{ pokeitem.id.toString().padStart(3, 0) }}
+      </p>
       <h2 class="text-black text-xl font-medium uppercase">
         {{ pokeitem.name }}
       </h2>
