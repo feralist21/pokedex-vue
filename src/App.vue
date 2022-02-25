@@ -1,32 +1,43 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view />
+    <section class="py-20">
+      <div class="container mx-auto px-4">
+        <h1 class="text-5xl text-center mb-16 font-bold">Pokedex Vue</h1>
+        <div class="grid gap-4 grid-cols-5 js-pokemon-list">
+          <pokemonCard
+            v-bind:pokeitem="item"
+            v-for="(item, idx) in pokemonList"
+            v-bind:key="idx"
+          ></pokemonCard>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import pokemonCard from "./components/pokemon-card";
 
-nav {
-  padding: 30px;
-}
+export default {
+  name: "App",
+  components: {
+    pokemonCard,
+  },
+  data() {
+    return {
+      pokemonList: [],
+    };
+  },
+  async mounted() {
+    for (let i = 1; i <= 20; i++) {
+      const f = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
+      const data = await f.json();
+      this.pokemonList.push(data);
+    }
+  },
+  methods: {},
+  computed: {},
+};
+</script>
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<style></style>
