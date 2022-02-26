@@ -3,7 +3,7 @@
     <div>
       <img
         class="w-auto mx-auto h-48"
-        :src="pokeitem.sprites.other.dream_world.front_default"
+        :src="img + pokeitem.id + '.svg'"
         :alt="pokeitem.name"
       />
     </div>
@@ -17,8 +17,8 @@
       <ul class="flex gap-4 mt-2 flex-wrap">
         <pokemonType
           :poketype="item.type.name"
-          v-for="(item, idx) in pokeitem.types"
-          v-bind:key="idx"
+          :key="id"
+          v-for="(item, id) in types"
         ></pokemonType>
       </ul>
     </div>
@@ -35,6 +35,19 @@ export default {
   },
   props: {
     pokeitem: Object,
+    img: String,
+  },
+  data() {
+    return {
+      types: {},
+    };
+  },
+  mounted() {
+    fetch(this.pokeitem.url)
+      .then((responce) =>
+        responce.status === 200 ? responce.json() : console.log("not 200")
+      )
+      .then((data) => (this.types = data.types));
   },
 };
 </script>
