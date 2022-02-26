@@ -1,18 +1,13 @@
 <template>
-  <div id="app">
-    <section class="py-20">
-      <div class="container mx-auto px-4">
-        <h1 class="text-5xl text-center mb-16 font-bold">Pokedex Vue</h1>
-        <div class="grid gap-4 grid-cols-5 js-pokemon-list">
-          <pokemonCard
-            :pokeitem="item"
-            :key="'poke' + idx"
-            :img="imgUrl"
-            v-for="(item, idx) in pokemonList"
-          ></pokemonCard>
-        </div>
-      </div>
-    </section>
+  <div
+    class="container mx-auto py-20 px-4 grid gap-4 grid-cols-5 js-pokemon-list"
+  >
+    <pokemonCard
+      :pokeitem="item"
+      :key="'poke' + idx"
+      :img="imgUrl"
+      v-for="(item, idx) in pokemonList"
+    ></pokemonCard>
   </div>
 </template>
 
@@ -24,12 +19,11 @@ export default {
   components: {
     pokemonCard,
   },
-  props: {
-    apiUrl: String,
-    imgUrl: String,
-  },
   data() {
     return {
+      apiUrl: "https://pokeapi.co/api/v2/pokemon/",
+      imgUrl:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/",
       pokemonList: [],
       currentUrl: "",
       nextUrl: "",

@@ -1,27 +1,29 @@
 <template>
   <div class="w-full p-4 bg-gray-100">
-    <div>
-      <img
-        class="w-auto mx-auto h-48"
-        :src="img + pokeitem.id + '.svg'"
-        :alt="pokeitem.name"
-      />
-    </div>
-    <div class="rounded-b-lg">
-      <p class="text-gray-400 text-sm mb-1">
-        #{{ pokeitem.id.toString().padStart(3, 0) }}
-      </p>
-      <h2 class="text-black text-xl font-medium uppercase">
-        {{ pokeitem.name }}
-      </h2>
-      <ul class="flex gap-4 mt-2 flex-wrap">
-        <pokemonType
-          :poketype="item.type.name"
-          :key="id"
-          v-for="(item, id) in types"
-        ></pokemonType>
-      </ul>
-    </div>
+    <router-link :to="{ path: `/${pokeitem.id}` }">
+      <div>
+        <img
+          class="w-auto mx-auto h-48"
+          :src="img + pokeitem.id + '.svg'"
+          :alt="pokeitem.name"
+        />
+      </div>
+      <div class="rounded-b-lg">
+        <p class="text-gray-400 text-sm mb-1">
+          #{{ pokeitem.id.toString().padStart(3, 0) }}
+        </p>
+        <h2 class="text-black text-xl font-medium uppercase">
+          {{ pokeitem.name }}
+        </h2>
+        <ul class="flex gap-4 mt-2 flex-wrap">
+          <pokemonType
+            :poketype="item.type.name"
+            :key="id"
+            v-for="(item, id) in types"
+          ></pokemonType>
+        </ul>
+      </div>
+    </router-link>
   </div>
 </template>
 
