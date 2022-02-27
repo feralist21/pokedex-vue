@@ -1,13 +1,32 @@
 <template>
-  <div
-    class="container mx-auto py-20 px-4 grid gap-4 grid-cols-5 js-pokemon-list"
-  >
-    <pokemonCard
-      :pokeitem="item"
-      :key="'poke' + idx"
-      :img="imgUrl"
-      v-for="(item, idx) in pokemonList"
-    ></pokemonCard>
+  <div class="mt-10">
+    <div class="container mx-auto px-4 mb-6 flex gap-4">
+      <button
+        @click="prev()"
+        class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md disabled:bg-gray-400"
+        type="button"
+        :disabled="disabledBtn"
+      >
+        Prev
+      </button>
+      <button
+        @click="next()"
+        class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
+        type="button"
+      >
+        Next
+      </button>
+    </div>
+    <div
+      class="container mx-auto pb-20 px-4 grid gap-4 grid-cols-5 js-pokemon-list"
+    >
+      <pokemonCard
+        :pokeitem="item"
+        :key="'poke' + idx"
+        :img="imgUrl"
+        v-for="(item, idx) in pokemonList"
+      ></pokemonCard>
+    </div>
   </div>
 </template>
 
@@ -27,20 +46,28 @@ export default {
       pokemonList: [],
       currentUrl: "",
       nextUrl: "",
+      prevUrl: null,
+      disabledBtn: true,
     };
   },
   mounted() {
     this.currentUrl = this.apiUrl;
-    this.getDataPokemons();
+    this.getDataPokemons(this.currentUrl);
   },
   methods: {
-    getDataPokemons() {
-      fetch(this.currentUrl)
+    getDataPokemons(url) {
+      fetch(url)
         .then((responce) =>
           responce.status === 200 ? responce.json() : console.log("not 200")
         )
         .then((data) => {
           this.nextUrl = data.next;
+          this.prevUrl = data.previous;
+          if (this.prevUrl === null) {
+            this.disabledBtn = true;
+          } else {
+            this.disabledBtn = false;
+          }
           data.results.forEach((pokemon) => {
             pokemon.id = pokemon.url
               .split("/")
@@ -52,6 +79,16 @@ export default {
           });
         })
         .catch((error) => console.log(error));
+    },
+    next() {
+      this.currentUrl = this.nextUrl;
+      this.pokemonList = [];
+      this.getDataPokemons(this.currentUrl);
+    },
+    prev() {
+      this.currentUrl = this.prevUrl;
+      this.pokemonList = [];
+      this.getDataPokemons(this.currentUrl);
     },
   },
   computed: {},

@@ -33,7 +33,7 @@
           <div class="flex">
             <div class="w-1/2 text-white">Weight</div>
             <div class="w-1/2 text-black text-right">
-              {{ info.weight / 1000 }} kg
+              {{ info.weight / 10 }} kg
             </div>
           </div>
         </div>
