@@ -1,21 +1,24 @@
 <template>
   <div class="mt-10">
-    <div class="container mx-auto px-4 mb-6 flex gap-4">
-      <button
-        @click="prev()"
-        class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md disabled:bg-gray-400"
-        type="button"
-        :disabled="disabledBtn"
-      >
-        Prev
-      </button>
-      <button
-        @click="next()"
-        class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
-        type="button"
-      >
-        Next
-      </button>
+    <div class="container mx-auto mb-6 px-4 flex gap-4 justify-between">
+      <pokemonSearchVue v-on:search="getSearchName"></pokemonSearchVue>
+      <div class="flex gap-4 justify-end">
+        <button
+          @click="prev()"
+          class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md disabled:bg-gray-400"
+          type="button"
+          :disabled="disabledBtn"
+        >
+          Prev
+        </button>
+        <button
+          @click="next()"
+          class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
+          type="button"
+        >
+          Next
+        </button>
+      </div>
     </div>
     <div
       class="container mx-auto pb-20 px-4 grid gap-4 grid-cols-5 js-pokemon-list"
@@ -24,7 +27,7 @@
         :pokeitem="item"
         :key="'poke' + idx"
         :img="imgUrl"
-        v-for="(item, idx) in pokemonList"
+        v-for="(item, idx) in filtered"
       ></pokemonCard>
     </div>
   </div>
@@ -32,11 +35,13 @@
 
 <script>
 import pokemonCard from "./pokemon-card";
+import pokemonSearchVue from "./pokemon-search.vue";
 
 export default {
   name: "pokemon-list",
   components: {
     pokemonCard,
+    pokemonSearchVue,
   },
   data() {
     return {
@@ -48,6 +53,7 @@ export default {
       nextUrl: "",
       prevUrl: null,
       disabledBtn: true,
+      pokemon: "",
     };
   },
   mounted() {
@@ -90,8 +96,17 @@ export default {
       this.pokemonList = [];
       this.getDataPokemons(this.currentUrl);
     },
+    getSearchName(item) {
+      this.pokemon = item;
+    },
   },
-  computed: {},
+  computed: {
+    filtered() {
+      return this.pokemonList.filter((el) => {
+        return el.name.toLowerCase().indexOf(this.pokemon.toLowerCase()) !== -1;
+      });
+    },
+  },
 };
 </script>
 
