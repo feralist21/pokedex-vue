@@ -9,7 +9,7 @@
       </p>
       <router-link
         class="block w-52 mx-auto py-4 bg-purple-600 text-center text-white text-xl rounded-md"
-        :to="{ name: 'list', query: { offset: '0', limit: '20' } }"
+        :to="{ name: 'list' }"
         >Вперед!</router-link
       >
     </div>

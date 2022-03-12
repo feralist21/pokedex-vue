@@ -54,20 +54,19 @@ export default {
       imgUrl:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/",
       pokemonList: [],
-      currentUrl: "",
-      nextUrl: "",
-      prevUrl: null,
       disabledBtn: true,
       pokemon: "",
-      params: {},
+      params: {
+        offset: "",
+        limit: 20,
+      },
     };
   },
   created() {
     this.getParamUrl();
   },
   mounted() {
-    this.currentUrl = this.apiUrl;
-    this.getDataPokemons(this.currentUrl);
+    this.getDataPokemons(this.apiUrl);
   },
   methods: {
     getDataPokemons(url) {
@@ -76,9 +75,7 @@ export default {
           responce.status === 200 ? responce.json() : console.log("not 200")
         )
         .then((data) => {
-          this.nextUrl = data.next;
-          this.prevUrl = data.previous;
-          if (this.prevUrl === null) {
+          if (data.previous === null) {
             this.disabledBtn = true;
           } else {
             this.disabledBtn = false;
@@ -96,18 +93,20 @@ export default {
         .catch((error) => console.log(error));
     },
     getParamUrl() {
-      const prmt = window.location.search.substring(1).split("&");
-      prmt.forEach((item) => {
-        let arrItem = item.split("=");
-        this.params[arrItem[0]] = Number(arrItem[1]);
-      });
-      this.apiUrl = `https://pokeapi.co/api/v2/pokemon/?offset=${this.params.offset}&limit=${this.params.limit}`;
+      if (window.location.search !== "") {
+        const prmt = window.location.search.substring(1).split("&");
+        prmt.forEach((item) => {
+          let arrItem = item.split("=");
+          this.params[arrItem[0]] = Number(arrItem[1]);
+        });
+        this.apiUrl = `https://pokeapi.co/api/v2/pokemon/?offset=${this.params.offset}&limit=${this.params.limit}`;
+      }
     },
     next() {
       this.params.offset += 10;
       this.$router.push({
         name: "list",
-        query: { offset: this.params.offset, limit: "20" },
+        query: { offset: this.params.offset, limit: this.params.limit },
       });
       this.getParamUrl();
       this.pokemonList = [];
@@ -117,7 +116,7 @@ export default {
       this.params.offset -= 10;
       this.$router.push({
         name: "list",
-        query: { offset: this.params.offset, limit: "20" },
+        query: { offset: this.params.offset, limit: this.params.limit },
       });
       this.getParamUrl();
       this.pokemonList = [];
