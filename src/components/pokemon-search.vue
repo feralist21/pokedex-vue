@@ -1,7 +1,7 @@
 <template>
-  <div class="w-52">
+  <div class="w-full mb-5 sm:w-1/2 sm:mb-0 lg:w-80">
     <input
-      class="block w-full h-full bg-gray-100 p-2 border-gray-100 border-2 focus:outline-none focus:border-2 focus:border-purple-600"
+      class="block w-full h-10 bg-gray-100 p-2 border-gray-100 border-2 focus:outline-none focus:border-2 focus:border-purple-600"
       type="text"
       name="search"
       id="search"

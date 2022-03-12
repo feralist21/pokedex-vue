@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full p-4 bg-gray-100">
+  <div class="w-full p-4 bg-gray-100 rounded-lg">
     <router-link :to="{ name: 'about', params: { name: pokeitem.name } }">
-      <div>
+      <div class="mb-4">
         <img
           class="w-auto mx-auto h-48"
           :src="img + pokeitem.id + '.svg'"

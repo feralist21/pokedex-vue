@@ -1,39 +1,53 @@
 <template>
   <div class="mt-10">
-    <div class="container mx-auto mb-6 px-4 flex gap-4 justify-between">
+    <div
+      class="container mx-auto mb-6 px-4 sm:flex sm:gap-4 lg:justify-between"
+    >
       <pokemonSearchVue v-on:search="getSearchName"></pokemonSearchVue>
-      <div class="flex gap-4 justify-end">
+      <div class="flex gap-4 sm:w-1/2 lg:w-72">
         <button
           @click="prev()"
-          class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md disabled:bg-gray-400"
+          class="block w-1/2 py-2 px-6 bg-purple-600 text-center text-white rounded-md disabled:bg-gray-400"
           type="button"
           :disabled="disabledBtn"
         >
           Prev
         </button>
-        <!-- <button
-          @click="next()"
-          class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
-          type="button"
-        >
-          Next
-        </button> -->
         <button
           @click="next()"
-          class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
+          class="block w-1/2 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
           type="button"
         >
           Next
         </button>
       </div>
     </div>
-    <div class="container mx-auto px-4 grid gap-4 grid-cols-5 js-pokemon-list">
+    <div
+      class="container mx-auto px-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+    >
       <pokemonCard
         :pokeitem="item"
         :key="'poke' + idx"
         :img="imgUrl"
         v-for="(item, idx) in filtered"
       ></pokemonCard>
+    </div>
+    <div class="container mx-auto flex gap-4 sm:gap-8 px-4 mt-8 lg:hidden">
+      <button
+        @click="prev()"
+        class="block w-1/2 py-2 px-6 bg-purple-600 text-center text-white rounded-md disabled:bg-gray-400"
+        type="button"
+        :disabled="disabledBtn"
+      >
+        Prev
+      </button>
+      <button
+        @click="next()"
+        class="block w-1/2 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
+        type="button"
+      >
+        Next
+      </button>
     </div>
   </div>
 </template>

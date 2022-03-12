@@ -1,5 +1,5 @@
 <template>
-  <div class="py-20">
+  <div class="py-4 sm:py-20">
     <pokemonFullinfoVue></pokemonFullinfoVue>
   </div>
 </template>

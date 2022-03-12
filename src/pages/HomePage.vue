@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen bg-gray-800 flex">
+  <div class="w-screen h-screen px-5 bg-gray-800 flex">
     <div class="m-auto text-center">
       <h1 class="text-6xl font-bold text-white mb-3">
         Привет, это твой Pokedex

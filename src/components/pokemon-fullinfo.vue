@@ -1,24 +1,26 @@
 <template>
   <div class="container-pokemon mx-auto py-6 px-4">
     <button
-      class="block w-32 mb-6 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
+      class="block w-full mb-6 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
       @click="goBack()"
     >
       Назад
     </button>
-    <h1 class="mb-20 text-5xl text-center font-bold uppercase">
+    <h1
+      class="mb-6 ms:mb-20 text-4xl sm:text-5xl text-center font-bold uppercase"
+    >
       {{ info.name }} №{{ info.id }}
     </h1>
-    <div class="flex">
-      <div class="w-1/2">
+    <div class="sm:flex">
+      <div class="w-full p-4 sm:w-1/2">
         <img
           class="w-auto h-96 mx-auto"
           :src="imgUrl + info.id + '.svg'"
           :alt="info.name"
         />
       </div>
-      <div class="w-1/2 pl-6">
-        <div class="w-80 p-4 bg-blue-400 rounded-md">
+      <div class="w-full sm:w-1/2 sm:pl-6">
+        <div class="md:w-80 p-4 bg-blue-400 rounded-md">
           <div class="flex mb-2">
             <div class="w-1/2 text-white">Base experience</div>
             <div class="w-1/2 text-black text-right">
@@ -38,7 +40,7 @@
             </div>
           </div>
         </div>
-        <div class="mt-8">
+        <div class="mt-4 sm:mt-8">
           <p class="font-bold text-xl">Abilities</p>
           <ul class="mt-2 flex gap-4">
             <pokemonAbilitiesVue
@@ -48,7 +50,7 @@
             ></pokemonAbilitiesVue>
           </ul>
         </div>
-        <div class="mt-8">
+        <div class="mt-4 sm:mt-8">
           <p class="font-bold text-xl">Type</p>
           <ul class="mt-2 flex gap-4">
             <pokemonTypeVue
