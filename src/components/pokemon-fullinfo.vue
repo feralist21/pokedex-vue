@@ -1,10 +1,11 @@
 <template>
   <div class="container-pokemon mx-auto py-6 px-4">
-    <router-link
+    <button
       class="block w-32 mb-6 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
-      :to="{ path: '/' }"
-      >Назад</router-link
+      @click="goBack()"
     >
+      Назад
+    </button>
     <h1 class="mb-20 text-5xl text-center font-bold uppercase">
       {{ info.name }} №{{ info.id }}
     </h1>
@@ -12,7 +13,7 @@
       <div class="w-1/2">
         <img
           class="w-auto h-96 mx-auto"
-          :src="imgUrl + this.id + '.svg'"
+          :src="imgUrl + info.id + '.svg'"
           :alt="info.name"
         />
       </div>
@@ -42,8 +43,8 @@
           <ul class="mt-2 flex gap-4">
             <pokemonAbilitiesVue
               :abilities="item.ability.name"
-              :key="id"
-              v-for="(item, id) in info.abilities"
+              :key="idx"
+              v-for="(item, idx) in info.abilities"
             ></pokemonAbilitiesVue>
           </ul>
         </div>
@@ -52,8 +53,8 @@
           <ul class="mt-2 flex gap-4">
             <pokemonTypeVue
               :poketype="item.type.name"
-              :key="id"
-              v-for="(item, id) in info.types"
+              :key="idx"
+              v-for="(item, idx) in info.types"
             ></pokemonTypeVue>
           </ul>
         </div>
@@ -77,11 +78,11 @@ export default {
       imgUrl:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/",
       info: {},
-      id: "",
+      name: "",
     };
   },
   mounted() {
-    this.id = document.location.pathname
+    this.name = document.location.pathname
       .toString()
       .split("/")
       .filter(function (part) {
@@ -89,14 +90,18 @@ export default {
       })
       .pop();
 
-    fetch(`https://pokeapi.co/api/v2/pokemon/${this.id}`)
+    fetch(`https://pokeapi.co/api/v2/pokemon/${this.name}`)
       .then((responce) =>
         responce.status === 200 ? responce.json() : console.log("not 200")
       )
       .then((data) => (this.info = data))
       .catch((error) => console.log(error));
   },
-  methods: {},
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
+  },
 };
 </script>
 

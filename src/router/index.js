@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import MainPage from "../pages/MainPage.vue";
+import HomePage from "../pages/HomePage.vue";
+import PokemonList from "../pages/PokemonList.vue";
 import AboutPage from "../pages/AboutPage.vue";
 
 Vue.use(VueRouter);
@@ -9,10 +10,15 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: MainPage,
+    component: HomePage,
   },
   {
-    path: "/:id",
+    path: "/list/",
+    name: "list",
+    component: PokemonList,
+  },
+  {
+    path: "/list/:name",
     name: "about",
     component: AboutPage,
   },

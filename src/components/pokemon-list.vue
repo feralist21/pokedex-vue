@@ -11,6 +11,13 @@
         >
           Prev
         </button>
+        <!-- <button
+          @click="next()"
+          class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
+          type="button"
+        >
+          Next
+        </button> -->
         <button
           @click="next()"
           class="block w-32 py-2 px-6 bg-purple-600 text-center text-white rounded-md"
@@ -20,9 +27,7 @@
         </button>
       </div>
     </div>
-    <div
-      class="container mx-auto pb-20 px-4 grid gap-4 grid-cols-5 js-pokemon-list"
-    >
+    <div class="container mx-auto px-4 grid gap-4 grid-cols-5 js-pokemon-list">
       <pokemonCard
         :pokeitem="item"
         :key="'poke' + idx"
@@ -34,7 +39,7 @@
 </template>
 
 <script>
-import pokemonCard from "./pokemon-card";
+import pokemonCard from "./pokemon-card.vue";
 import pokemonSearchVue from "./pokemon-search.vue";
 
 export default {
@@ -45,7 +50,7 @@ export default {
   },
   data() {
     return {
-      apiUrl: "https://pokeapi.co/api/v2/pokemon/",
+      apiUrl: "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20",
       imgUrl:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/",
       pokemonList: [],
@@ -54,7 +59,11 @@ export default {
       prevUrl: null,
       disabledBtn: true,
       pokemon: "",
+      params: {},
     };
+  },
+  created() {
+    this.getParamUrl();
   },
   mounted() {
     this.currentUrl = this.apiUrl;
@@ -86,15 +95,33 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    getParamUrl() {
+      const prmt = window.location.search.substring(1).split("&");
+      prmt.forEach((item) => {
+        let arrItem = item.split("=");
+        this.params[arrItem[0]] = Number(arrItem[1]);
+      });
+      this.apiUrl = `https://pokeapi.co/api/v2/pokemon/?offset=${this.params.offset}&limit=${this.params.limit}`;
+    },
     next() {
-      this.currentUrl = this.nextUrl;
+      this.params.offset += 10;
+      this.$router.push({
+        name: "list",
+        query: { offset: this.params.offset, limit: "20" },
+      });
+      this.getParamUrl();
       this.pokemonList = [];
-      this.getDataPokemons(this.currentUrl);
+      this.getDataPokemons(this.apiUrl);
     },
     prev() {
-      this.currentUrl = this.prevUrl;
+      this.params.offset -= 10;
+      this.$router.push({
+        name: "list",
+        query: { offset: this.params.offset, limit: "20" },
+      });
+      this.getParamUrl();
       this.pokemonList = [];
-      this.getDataPokemons(this.currentUrl);
+      this.getDataPokemons(this.apiUrl);
     },
     getSearchName(item) {
       this.pokemon = item;
@@ -107,6 +134,7 @@ export default {
       });
     },
   },
+  watch: {},
 };
 </script>
 

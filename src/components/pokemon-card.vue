@@ -1,6 +1,6 @@
 <template>
   <div class="w-full p-4 bg-gray-100">
-    <router-link :to="{ path: `/${pokeitem.id}` }">
+    <router-link :to="{ name: 'about', params: { name: pokeitem.name } }">
       <div>
         <img
           class="w-auto mx-auto h-48"
