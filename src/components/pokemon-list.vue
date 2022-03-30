@@ -4,7 +4,7 @@
       class="container mx-auto mb-6 px-4 sm:flex sm:gap-4 lg:justify-between"
     >
       <pokemonSearchVue v-on:search="getSearchName"></pokemonSearchVue>
-      <div class="flex gap-4 sm:w-1/2 lg:w-72">
+      <div class="flex gap-4 sm:mb-0 mb-5 sm:w-1/3 lg:w-72">
         <button
           @click="prev()"
           class="block w-1/2 py-2 px-6 bg-purple-600 text-center text-white rounded-md disabled:bg-gray-400"
@@ -21,14 +21,24 @@
           Next
         </button>
       </div>
+      <div class="w-full sm:w-1/3 lg:w-48">
+        <router-link
+          class="block py-2 px-6 bg-purple-600 text-white rounded-md text-center"
+          :to="{ name: 'favorite', params: { pokemons: favoritePokemons } }"
+        >
+          Избранное <span>{{ favorCounter }}</span></router-link
+        >
+      </div>
     </div>
     <div
       class="container mx-auto px-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
     >
       <pokemonCard
+        :favorArr="favoritePokemons"
         :pokeitem="item"
         :key="'poke' + idx"
         :img="imgUrl"
+        v-on:setFavoritePoke="getFavoritePokeId"
         v-for="(item, idx) in filtered"
       ></pokemonCard>
     </div>
@@ -74,9 +84,17 @@ export default {
         offset: "",
         limit: 20,
       },
+      favoritePokemons: [],
+      favorCounter: "",
     };
   },
   created() {
+    const favoriteData = localStorage.getItem("favoritePokemons");
+    if (favoriteData) {
+      this.favoritePokemons = JSON.parse(favoriteData);
+      this.favorCounter = this.favoritePokemons.length;
+    }
+
     this.getParamUrl();
   },
   mounted() {
@@ -117,7 +135,7 @@ export default {
       }
     },
     next() {
-      this.params.offset += 10;
+      this.params.offset += 20;
       this.$router.push({
         name: "list",
         query: { offset: this.params.offset, limit: this.params.limit },
@@ -127,7 +145,7 @@ export default {
       this.getDataPokemons(this.apiUrl);
     },
     prev() {
-      this.params.offset -= 10;
+      this.params.offset -= 20;
       this.$router.push({
         name: "list",
         query: { offset: this.params.offset, limit: this.params.limit },
@@ -138,6 +156,27 @@ export default {
     },
     getSearchName(item) {
       this.pokemon = item;
+    },
+    getFavoritePokeId(elem) {
+      const pok = this.favoritePokemons.find((item) => item == elem);
+      if (pok) {
+        const index = this.favoritePokemons.indexOf(pok);
+        if (index !== -1) {
+          this.favoritePokemons.splice(index, 1);
+          localStorage.setItem(
+            "favoritePokemons",
+            JSON.stringify(this.favoritePokemons)
+          );
+          this.favorCounter--;
+        }
+      } else {
+        this.favoritePokemons.push(elem);
+        localStorage.setItem(
+          "favoritePokemons",
+          JSON.stringify(this.favoritePokemons)
+        );
+        this.favorCounter++;
+      }
     },
   },
   computed: {

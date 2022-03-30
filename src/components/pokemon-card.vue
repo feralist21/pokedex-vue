@@ -1,14 +1,17 @@
 <template>
   <div class="w-full p-4 bg-gray-100 rounded-lg">
-    <router-link :to="{ name: 'about', params: { name: pokeitem.name } }">
-      <div class="mb-4">
-        <img
-          class="w-auto mx-auto h-48"
-          :src="img + pokeitem.id + '.svg'"
-          :alt="pokeitem.name"
-        />
-      </div>
-      <div class="rounded-b-lg">
+    <router-link
+      class="block mb-4"
+      :to="{ name: 'about', params: { name: pokeitem.name } }"
+    >
+      <img
+        class="block w-auto mx-auto h-48"
+        :src="img + pokeitem.id + '.svg'"
+        :alt="pokeitem.name"
+      />
+    </router-link>
+    <div class="flex gap-2 justify-between items-end">
+      <div class="w-auto">
         <p class="text-gray-400 text-sm mb-1">
           #{{ pokeitem.id.toString().padStart(3, 0) }}
         </p>
@@ -23,7 +26,15 @@
           ></pokemonType>
         </ul>
       </div>
-    </router-link>
+      <input
+        class="w-6 h-6"
+        type="checkbox"
+        name="favorite"
+        id="favorite"
+        v-model="favorite"
+        v-on:change="pickFavorPokemon()"
+      />
+    </div>
   </div>
 </template>
 
@@ -38,18 +49,33 @@ export default {
   props: {
     pokeitem: Object,
     img: String,
+    favorArr: Array,
   },
   data() {
     return {
+      apiUrl: "https://pokeapi.co/api/v2/pokemon/",
       types: {},
+      favorite: false,
     };
   },
+  created() {
+    this.favorArr.forEach((item) => {
+      if (item == this.pokeitem.id) {
+        this.favorite = true;
+      }
+    });
+  },
   mounted() {
-    fetch(this.pokeitem.url)
+    fetch(this.apiUrl + this.pokeitem.id)
       .then((responce) =>
         responce.status === 200 ? responce.json() : console.log("not 200")
       )
       .then((data) => (this.types = data.types));
+  },
+  methods: {
+    pickFavorPokemon() {
+      this.$emit("setFavoritePoke", this.pokeitem.id);
+    },
   },
 };
 </script>
