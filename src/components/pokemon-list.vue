@@ -24,7 +24,7 @@
       <div class="w-full sm:w-1/3 lg:w-48">
         <router-link
           class="block py-2 px-6 bg-purple-600 text-white rounded-md text-center"
-          :to="{ name: 'favorite', params: { pokemons: favoritePokemons } }"
+          :to="{ name: 'favorite' }"
         >
           Избранное <span>{{ favorCounter }}</span></router-link
         >
@@ -34,12 +34,11 @@
       class="container mx-auto px-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
     >
       <pokemonCard
-        :favorArr="favoritePokemons"
         :pokeitem="item"
         :key="'poke' + idx"
         :img="imgUrl"
-        v-on:setFavoritePoke="getFavoritePokeId"
         v-for="(item, idx) in filtered"
+        v-on:pokemoncheck="getFavoritePokemons"
       ></pokemonCard>
     </div>
     <div class="container mx-auto flex gap-4 sm:gap-8 px-4 mt-8 lg:hidden">
@@ -84,17 +83,16 @@ export default {
         offset: "",
         limit: 20,
       },
-      favoritePokemons: [],
       favorCounter: "",
+      favoriteArr: [],
     };
   },
   created() {
-    const favoriteData = localStorage.getItem("favoritePokemons");
-    if (favoriteData) {
-      this.favoritePokemons = JSON.parse(favoriteData);
-      this.favorCounter = this.favoritePokemons.length;
-    }
-
+    // const favoriteData = localStorage.getItem("favoritePokemons");
+    // if (favoriteData) {
+    //   this.favoritePokemons = JSON.parse(favoriteData);
+    //   this.favorCounter = this.favoritePokemons.length;
+    // }
     this.getParamUrl();
   },
   mounted() {
@@ -157,24 +155,16 @@ export default {
     getSearchName(item) {
       this.pokemon = item;
     },
-    getFavoritePokeId(elem) {
-      const pok = this.favoritePokemons.find((item) => item == elem);
+    getFavoritePokemons(elem) {
+      const pok = this.favoriteArr.find((item) => item == elem);
       if (pok) {
-        const index = this.favoritePokemons.indexOf(pok);
+        const index = this.favoriteArr.indexOf(pok);
         if (index !== -1) {
-          this.favoritePokemons.splice(index, 1);
-          localStorage.setItem(
-            "favoritePokemons",
-            JSON.stringify(this.favoritePokemons)
-          );
+          this.favoriteArr.splice(index, 1);
           this.favorCounter--;
         }
       } else {
-        this.favoritePokemons.push(elem);
-        localStorage.setItem(
-          "favoritePokemons",
-          JSON.stringify(this.favoritePokemons)
-        );
+        this.favoriteArr.push(elem);
         this.favorCounter++;
       }
     },

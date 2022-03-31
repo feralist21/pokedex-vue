@@ -32,7 +32,7 @@
         name="favorite"
         id="favorite"
         v-model="favorite"
-        v-on:change="pickFavorPokemon()"
+        v-on:change="checkFavoritePokemon()"
       />
     </div>
   </div>
@@ -49,7 +49,6 @@ export default {
   props: {
     pokeitem: Object,
     img: String,
-    favorArr: Array,
   },
   data() {
     return {
@@ -59,11 +58,10 @@ export default {
     };
   },
   created() {
-    this.favorArr.forEach((item) => {
-      if (item == this.pokeitem.id) {
-        this.favorite = true;
-      }
-    });
+    const favoriteData = localStorage.getItem(this.pokeitem.name);
+    if (favoriteData) {
+      this.favorite = true;
+    }
   },
   mounted() {
     fetch(this.apiUrl + this.pokeitem.id)
@@ -73,8 +71,14 @@ export default {
       .then((data) => (this.types = data.types));
   },
   methods: {
-    pickFavorPokemon() {
-      this.$emit("setFavoritePoke", this.pokeitem.id);
+    checkFavoritePokemon() {
+      if (this.favorite === false) {
+        localStorage.removeItem(this.pokeitem.name);
+        this.$emit("pokemoncheck", this.pokeitem.name);
+      } else {
+        localStorage.setItem(this.pokeitem.name, this.pokeitem.id);
+        this.$emit("pokemoncheck", this.pokeitem.name);
+      }
     },
   },
 };
