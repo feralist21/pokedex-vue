@@ -18,13 +18,13 @@
         <h2 class="text-black text-xl font-medium uppercase">
           {{ pokeitem.name }}
         </h2>
-        <ul class="flex gap-4 mt-2 flex-wrap">
+        <!-- <ul class="flex gap-4 mt-2 flex-wrap">
           <pokemonType
             :poketype="item.type.name"
             :key="id"
             v-for="(item, id) in types"
           ></pokemonType>
-        </ul>
+        </ul> -->
       </div>
       <input
         class="w-6 h-6"
@@ -39,12 +39,12 @@
 </template>
 
 <script>
-import pokemonType from "./pokemon-type";
+// import pokemonType from "./pokemon-type";
 
 export default {
   name: "pokemon-card",
   components: {
-    pokemonType,
+    // pokemonType,
   },
   props: {
     pokeitem: Object,
