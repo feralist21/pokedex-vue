@@ -27,7 +27,6 @@ const routes = [
     path: "/favorite/",
     name: "favorite",
     component: FavoritePage,
-    props: true,
   },
 ];
 

@@ -3,12 +3,10 @@
     class="container mx-auto px-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
   >
     <pokemonCard
-      :favorArr="favoritePokemons"
       :pokeitem="item"
       :img="imgUrl"
       :key="'poke' + idx"
       v-for="(item, idx) in pokemons"
-      v-on:setFavoritePoke="getFavoritePokeId"
     ></pokemonCard>
   </div>
 </template>
@@ -45,25 +43,6 @@ export default {
             this.pokemons.push(data);
           });
       });
-    },
-    getFavoritePokeId(elem) {
-      const pok = this.favoritePokemons.find((item) => item == elem);
-      if (pok) {
-        const index = this.favoritePokemons.indexOf(pok);
-        if (index !== -1) {
-          this.favoritePokemons.splice(index, 1);
-          localStorage.setItem(
-            "favoritePokemons",
-            JSON.stringify(this.favoritePokemons)
-          );
-        }
-      } else {
-        this.favoritePokemons.push(elem);
-        localStorage.setItem(
-          "favoritePokemons",
-          JSON.stringify(this.favoritePokemons)
-        );
-      }
     },
   },
 };

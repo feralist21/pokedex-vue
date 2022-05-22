@@ -49,7 +49,6 @@ export default {
   props: {
     pokeitem: Object,
     img: String,
-    favorArr: Array,
   },
   data() {
     return {
@@ -59,7 +58,7 @@ export default {
     };
   },
   created() {
-    this.favorArr.forEach((item) => {
+    this.$store.state.favoritePokemons.forEach((item) => {
       if (item == this.pokeitem.id) {
         this.favorite = true;
       }
@@ -74,7 +73,12 @@ export default {
   },
   methods: {
     pickFavorPokemon() {
-      this.$emit("setFavoritePoke", this.pokeitem.id);
+      if (this.favorite) {
+        this.$store.commit("ADD_POKEMON", this.pokeitem.id);
+      } else {
+        this.$store.commit("DELETE_POKEMON", this.pokeitem.id);
+      }
+      this.$emit("setFavoritePoke", this.favorite);
     },
   },
 };
