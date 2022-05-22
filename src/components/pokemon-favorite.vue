@@ -8,6 +8,7 @@
       :img="imgUrl"
       :key="'poke' + idx"
       v-for="(item, idx) in pokemons"
+      v-on:setFavoritePoke="getFavoritePokeId"
     ></pokemonCard>
   </div>
 </template>
@@ -44,6 +45,25 @@ export default {
             this.pokemons.push(data);
           });
       });
+    },
+    getFavoritePokeId(elem) {
+      const pok = this.favoritePokemons.find((item) => item == elem);
+      if (pok) {
+        const index = this.favoritePokemons.indexOf(pok);
+        if (index !== -1) {
+          this.favoritePokemons.splice(index, 1);
+          localStorage.setItem(
+            "favoritePokemons",
+            JSON.stringify(this.favoritePokemons)
+          );
+        }
+      } else {
+        this.favoritePokemons.push(elem);
+        localStorage.setItem(
+          "favoritePokemons",
+          JSON.stringify(this.favoritePokemons)
+        );
+      }
     },
   },
 };
