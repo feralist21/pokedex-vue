@@ -23,6 +23,7 @@
       </div>
       <div class="w-full sm:w-1/3 lg:w-48">
         <router-link
+          v-show="favorCounter"
           class="block py-2 px-6 bg-purple-600 text-white rounded-md text-center"
           :to="{ name: 'favorite' }"
         >

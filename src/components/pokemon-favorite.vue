@@ -23,13 +23,12 @@ export default {
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/",
       pokemons: [],
       favoritePokemons: [],
+      showAttention: true,
     };
   },
   mounted() {
     const favoriteData = localStorage.getItem("favoritePokemons");
-    if (favoriteData) {
-      this.favoritePokemons = JSON.parse(favoriteData).sort();
-    }
+    this.favoritePokemons = JSON.parse(favoriteData).sort();
     this.getData();
   },
   methods: {
