@@ -15,7 +15,7 @@
       <div class="w-full p-4 sm:w-1/2">
         <img
           class="w-auto h-96 mx-auto"
-          :src="imgUrl + info.id + '.svg'"
+          :src="imgUrl + info.id + '.png'"
           :alt="info.name"
         />
       </div>
@@ -78,7 +78,7 @@ export default {
   data() {
     return {
       imgUrl:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/",
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/",
       info: {},
       name: "",
     };

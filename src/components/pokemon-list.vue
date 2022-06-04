@@ -3,7 +3,13 @@
     <div
       class="container mx-auto mb-6 px-4 sm:flex sm:gap-4 lg:justify-between"
     >
-      <pokemonSearchVue v-on:search="getSearchName"></pokemonSearchVue>
+      <button
+        @click="showModal = true"
+        class="w-full mb-5 sm:w-1/3 sm:mb-0 lg:w-52 block py-2 px-6 bg-purple-600 text-white rounded-md text-center"
+        type="button"
+      >
+        Поиск покемона
+      </button>
       <div class="flex gap-4 sm:mb-0 mb-5 sm:w-1/3 lg:w-72">
         <button
           @click="prev()"
@@ -38,7 +44,7 @@
         :pokeitem="item"
         :img="imgUrl"
         :key="'poke' + idx"
-        v-for="(item, idx) in filtered"
+        v-for="(item, idx) in pokemonList"
         v-on:setFavoritePoke="setCounter"
       ></pokemonCard>
     </div>
@@ -59,18 +65,22 @@
         Next
       </button>
     </div>
+    <pokemonModalVue
+      v-if="showModal"
+      @close="showModal = false"
+    ></pokemonModalVue>
   </div>
 </template>
 
 <script>
 import pokemonCard from "./pokemon-card.vue";
-import pokemonSearchVue from "./pokemon-search.vue";
+import pokemonModalVue from "./pokemon-modal.vue";
 
 export default {
   name: "pokemon-list",
   components: {
     pokemonCard,
-    pokemonSearchVue,
+    pokemonModalVue,
   },
   data() {
     return {
@@ -85,6 +95,7 @@ export default {
         limit: 20,
       },
       favorCounter: 0,
+      showModal: false,
     };
   },
   created() {
@@ -149,22 +160,12 @@ export default {
       this.pokemonList = [];
       this.getDataPokemons(this.apiUrl);
     },
-    getSearchName(item) {
-      this.pokemon = item;
-    },
     setCounter(item) {
       if (item) {
         this.favorCounter++;
       } else {
         this.favorCounter--;
       }
-    },
-  },
-  computed: {
-    filtered() {
-      return this.pokemonList.filter((el) => {
-        return el.name.toLowerCase().indexOf(this.pokemon.toLowerCase()) !== -1;
-      });
     },
   },
   watch: {},
